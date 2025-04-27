@@ -4,7 +4,6 @@
 # 資料檔案不需上傳
 /data/*
 !/data/README.md   # 可放個提示文檔
-!/data
 
 # 排除執行產生的檔案
 __pycache__/
