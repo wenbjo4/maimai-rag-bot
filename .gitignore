@@ -1,0 +1,16 @@
+# 環境變數
+.env
+
+# 資料檔案不需上傳
+/data/*
+!/data/README.md   # 可放個提示文檔
+
+# 排除執行產生的檔案
+__pycache__/
+*.pyc
+
+# 不同步 notebooks
+/notebooks/*.ipynb
+
+# 可選：排除本地執行日誌
+*.log

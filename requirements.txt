@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+openai
+langchain
+langchain-openai
+langchain-community
+faiss-cpu
+python-dotenv
+pyyaml
+gradio
