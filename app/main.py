@@ -21,8 +21,8 @@ llm = ChatOpenAI(model_name="gpt-4o", temperature=0.3)
 with open("data/embedding_results.json", "r", encoding="utf-8") as f:
     embedding_data = json.load(f)
 
-# 4. 建立 FAISS 向量資料庫
-texts = [item['title'] for item in embedding_data]
+# 4. 建立 FAISS 向量資料庫，使用 content 作為索引
+texts = [item['content'] for item in embedding_data]
 embeddings = [item['embedding'] for item in embedding_data]
 faiss_db = FAISS.from_embeddings(list(zip(texts, embeddings)), embedding_model)
 
@@ -56,7 +56,7 @@ qa_chain = RetrievalQA.from_chain_type(
 
 # 7. Gradio UI
 def rag_answer(user_query, history):
-    # 擷取引用的資料 context
+    # 擷取引用的資料 context（使用 content）
     retrieved_docs = faiss_db.similarity_search(user_query, k=5)
     context = "\n".join([doc.page_content for doc in retrieved_docs])
 
