@@ -1,6 +1,5 @@
 import os
 import json
-import yaml  # 新增
 from dotenv import load_dotenv
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_community.vectorstores import FAISS
@@ -19,20 +18,8 @@ llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0.7)
 with open("embedding_results.json", "r", encoding="utf-8") as f:
     embedding_data = json.load(f)
 
-# 4. 讀取 YAML 檔案內容
-texts = []
-for item in embedding_data:
-    file_path = item['file']
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            # 讀取 YAML 檔案後轉換成字串
-            yaml_content = yaml.safe_load(f)
-            text_content = json.dumps(yaml_content, ensure_ascii=False, indent=2)
-            texts.append(text_content)
-    except Exception as e:
-        print(f"無法讀取 {file_path}: {e}")
-        texts.append("")
-
+# 4. 使用 content 作為 FAISS 檢索資料
+texts = [item['content'] for item in embedding_data]
 embeddings = [item['embedding'] for item in embedding_data]
 faiss_db = FAISS.from_embeddings(list(zip(texts, embeddings)), embedding_model)
 
@@ -47,7 +34,7 @@ prompt_template = """
 問題：
 {question}
 
-請詳細且完整地回答玩家的問題，提供具體建議與說明。：
+請詳細且完整地回答玩家的問題，提供具體建議與說明：
 """
 
 prompt = PromptTemplate(

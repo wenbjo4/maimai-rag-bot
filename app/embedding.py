@@ -22,7 +22,7 @@ for root, dirs, files in os.walk("data/HTML資料"):
 # 讀取 YAML 並以 title 為單位做 embedding
 embeddings_result = []
 
-for file_path in yaml_files:
+for file_path in tqdm(yaml_files, desc="處理 YAML 檔案"):
     with open(file_path, 'r', encoding='utf-8') as f:
         data = yaml.safe_load(f)
         for entry in data:
@@ -34,6 +34,7 @@ for file_path in yaml_files:
                 embedding = embedding_model.embed_query(text_to_embed)
                 embeddings_result.append({
                     "title": title,
+                    "content": content,
                     "embedding": embedding
                 })
             except Exception as e:
