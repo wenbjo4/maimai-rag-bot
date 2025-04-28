@@ -2,7 +2,7 @@
 .env
 
 # 資料檔案不需上傳
-/data/
+/data/*
 !/data/embedding_results.json
 !/data/README.md
 
